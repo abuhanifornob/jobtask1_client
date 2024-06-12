@@ -4,6 +4,9 @@ import Home from "../pages/Home";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Contact from "../pages/Contact";
+import TodoDashboardLayout from "../layouts/TodoDashboardLayout";
+import Todos from "../pages/Todo/Todos";
+import EditProfile from "../pages/EditProfile";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +28,20 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/editProfile",
+        element: <EditProfile />,
+      },
+    ],
+  },
+  {
+    path: "todoDashboard",
+    element: <TodoDashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <Todos />,
       },
     ],
   },

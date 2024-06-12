@@ -27,7 +27,7 @@ const CreateTask = () => {
   };
   return (
     <div className="">
-      <div className="max-w-screen-md mx-auto bg-zinc-100 p-4">
+      <div className="max-w-screen-md mx-auto bg-violet-100 p-6 rounded-lg border-spacing-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="title" className="block font-medium">
@@ -38,7 +38,7 @@ const CreateTask = () => {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 p-2 w-full  rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
