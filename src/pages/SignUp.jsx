@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../components/login_register/GoogleLogin";
 import FacebookLogin from "../components/login_register/FacebookLogin";
 import { useState } from "react";
@@ -9,6 +9,9 @@ const SignUp = () => {
   const [errors, setErrors] = useState(null);
   const [passMatch, setPassMatch] = useState(null);
   const { createUserWithEmail } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
   const handleSignIn = async (e) => {
     e.preventDefault();
     setErrors(null);
@@ -25,6 +28,7 @@ const SignUp = () => {
       createUserWithEmail(email, password)
         .then(() => {
           toast.success("Login success !!");
+          navigate(from);
           form.reset();
         })
         .catch((error) => {

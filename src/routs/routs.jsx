@@ -7,6 +7,7 @@ import Contact from "../pages/Contact";
 import TodoDashboardLayout from "../layouts/TodoDashboardLayout";
 import Todos from "../pages/Todo/Todos";
 import EditProfile from "../pages/EditProfile";
+import PrivetRoute from "./PrivetRoute/PrivetRoute";
 
 export const router = createBrowserRouter([
   {
@@ -37,11 +38,20 @@ export const router = createBrowserRouter([
   },
   {
     path: "todoDashboard",
-    element: <TodoDashboardLayout />,
+    element: (
+      <PrivetRoute>
+        <TodoDashboardLayout />
+      </PrivetRoute>
+    ),
     children: [
       {
         path: "",
-        element: <Todos />,
+        element: (
+          <PrivetRoute>
+            {" "}
+            <Todos />
+          </PrivetRoute>
+        ),
       },
     ],
   },

@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Images/tskmlogo.jpg";
+import useAuth from "../hooks/useAuth";
+import { RxAvatar } from "react-icons/rx";
+import toast from "react-hot-toast";
 const Navbar = () => {
+  const { user, logout } = useAuth();
+  const handleLogout = async () => {
+    logout().then(() => {
+      toast.success("Logout Success");
+    });
+  };
   return (
     <div>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-slate-600 text-white text-4xl">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -24,7 +33,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm text-xl dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
                 <Link to={"/"}>Home</Link>
@@ -40,7 +49,7 @@ const Navbar = () => {
           <img className="w-10 h-10 rounded-full" src={logo} alt="" />
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
+          <ul className="menu menu-horizontal px-1 text-2xl">
             <li>
               <Link to={"/"}>Home</Link>
             </li>
@@ -53,32 +62,44 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link className="me-2" to={"/signIn"}>
-            SignIn
-          </Link>
-          <a className="btn">Button</a>
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn m-1">
-              Click
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-100  text-center"
-            >
-              <div className="text-center text-2xl font-semibold bg-yellow-200 p-4 ">
-                <div className="flex justify-center items-center my-4">
-                  <img src={logo} alt="" className="w-32 h-32 rounded-full" />
-                </div>
+          {!user && (
+            <Link className="me-2" to={"/signIn"}>
+              SignIn
+            </Link>
+          )}
 
-                <p className="mt-4"> Abu Hanif</p>
-                <p className="mt-4"> hanifcse90@gmail.com</p>
-                <div className="flex justify-between mt-4">
-                  <Link to={"/editProfile"}>Edit Profile</Link>
-                  <button>Logout</button>
-                </div>
+          {user && (
+            <div className="dropdown dropdown-end me-8">
+              <div tabIndex={0} role="button" className=" m-1">
+                {user?.photoURL ? (
+                  <img
+                    src={user?.photoURL}
+                    alt=""
+                    className="w-12 h-12 rounded-full"
+                  />
+                ) : (
+                  <RxAvatar className="w-12 h-12" />
+                )}
               </div>
-            </ul>
-          </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content text-xl z-[1] menu p-2 shadow bg-base-100 rounded-box w-100  text-center"
+              >
+                <div className="text-center text-xl font-semibold bg-yellow-200 p-4 ">
+                  <div className="flex justify-center items-center my-4">
+                    <img src={logo} alt="" className="w-32 h-32 rounded-full" />
+                  </div>
+
+                  <p className="mt-4"> Abu Hanif</p>
+                  <p className="mt-4"> hanifcse90@gmail.com</p>
+                  <div className="flex justify-between mt-4">
+                    <Link to={"/editProfile"}>Edit Profile</Link>
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

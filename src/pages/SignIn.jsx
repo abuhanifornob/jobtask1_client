@@ -1,8 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "../components/login_register/GoogleLogin";
 import FacebookLogin from "../components/login_register/FacebookLogin";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
+  const { signInWithEmail } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    console.log(signInWithEmail);
+    signInWithEmail(email, password)
+      .then(() => {
+        toast.success("Login In Success");
+        navigate(from);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse my-18">
@@ -26,7 +48,7 @@ const SignIn = () => {
           </div>
         </div>
         <div className="card shrink-0 w-full lg:w-1/2 shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form onSubmit={handleLogin} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>

@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   };
 
   // sign in Use User Email and Password
-  const signInWithEmail = (auth, email, password) => {
+  const signInWithEmail = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
