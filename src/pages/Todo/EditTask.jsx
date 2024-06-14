@@ -1,46 +1,68 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import toast from "react-hot-toast";
-// eslint-disable-next-line react/prop-types
-const CreateTask = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [deadline, setDeadline] = useState("");
-  const [priority, setPriority] = useState("");
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Create a task object with the form data
-    const newTask = {
-      title,
-      description,
-      deadline,
-      priority,
-      status: "tod-do",
+const EditTask = () => {
+  const { id } = useParams();
+  const [task, setTask] = useState({
+    title: "",
+    description: "",
+    deadline: "",
+    priority: "",
+  });
+  console.log(id);
+  useEffect(() => {
+    // Example of fetching task data from an API
+    // Replace this with your actual API fetch logic
+    const fetchTask = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/task/edit-task/${id}`);
+
+        const data = await res.json();
+        // Update task state with fetched data
+        console.log(data);
+        setTask({
+          title: data.title,
+          description: data.description,
+          deadline: data.deadline,
+          priority: data.priority,
+        });
+      } catch (error) {
+        console.error("Error fetching task:", error);
+        // Handle error or set default values if needed
+      }
     };
 
-    fetch("http://localhost:3000/task", {
-      method: "POST",
+    fetchTask();
+  }, [id]);
+  console.log(task);
+
+  console.log(task.title);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("FormData", task);
+    fetch(`http://localhost:3000/task/${id}`, {
+      method: "PATCH",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(newTask),
+
+      body: JSON.stringify(task),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        toast.success("Task Create Success");
-      })
-      .catch((error) => console.log(error));
-
-    // Reset form fields after submission
-    setTitle("");
-    setDescription("");
-    setDeadline("");
-    setPriority("");
+      });
+    setTask({
+      title: "",
+      description: "",
+      deadline: "",
+      priority: "",
+    });
   };
   return (
     <div className="">
+      <h1 className="text-2xl text-center mt-8 font-bold">Edit Task</h1>
       <div className="max-w-screen-md mx-auto bg-violet-100 p-6 rounded-lg border-spacing-1 my-12">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -50,8 +72,8 @@ const CreateTask = () => {
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={task.title}
+              onChange={(e) => setTask({ ...task, title: e.target.value })}
               className="mt-1 p-2 w-full border-slate-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               required
             />
@@ -62,8 +84,10 @@ const CreateTask = () => {
             </label>
             <textarea
               id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={task.description}
+              onChange={(e) =>
+                setTask({ ...task, description: e.target.value })
+              }
               className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               rows="3"
             ></textarea>
@@ -75,8 +99,8 @@ const CreateTask = () => {
             <input
               type="date"
               id="deadline"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
+              value={task.deadline}
+              onChange={(e) => setTask({ ...task, deadline: e.target.value })}
               className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -86,8 +110,8 @@ const CreateTask = () => {
             </label>
             <select
               id="priority"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              value={task.priority}
+              onChange={(e) => setTask({ ...task, priority: e.target.value })}
               className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select Priority</option>
@@ -102,7 +126,7 @@ const CreateTask = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Add Task
+            Edit Task
           </motion.button>
         </form>
       </div>
@@ -110,4 +134,4 @@ const CreateTask = () => {
   );
 };
 
-export default CreateTask;
+export default EditTask;

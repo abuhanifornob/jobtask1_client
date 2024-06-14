@@ -1,11 +1,9 @@
 import Banner from "../components/Home/Banner";
-import CreateTask from "./CreateTask";
 
 const Home = () => {
   return (
-    <div>
+    <div className="mt-12">
       <Banner />
-      <CreateTask />
     </div>
   );
 };

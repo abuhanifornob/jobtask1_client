@@ -26,7 +26,7 @@ const SignIn = () => {
       });
   };
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-screen bg-base-200 mt-20">
       <div className="hero-content flex-col lg:flex-row-reverse my-18">
         <div className="text-center lg:text-left">
           <div className="w-full mx-auto text-center">

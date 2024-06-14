@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const TodoDashboardLayout = () => {
   return (
     <>
       <Navbar />
-      <div className="drawer lg:drawer-open">
+      <div className="drawer lg:drawer-open mt-20">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
+        <div className="drawer-content flex flex-col">
           <Outlet />
 
           <label
@@ -27,16 +27,19 @@ const TodoDashboardLayout = () => {
             {/* Sidebar content here */}
 
             <li>
-              <a>Todo List</a>
+              <Link to={"task"}>Pending Task</Link>
             </li>
             <li>
-              <a>Ongoing Task</a>
+              <Link to={"ongoing"}>Ongoing Task</Link>
             </li>
             <li>
-              <a>completed Task</a>
+              <Link to={"complete"}>completed Task</Link>
             </li>
             <li>
-              <a>Create Task</a>
+              <Link to={"all"}>All Task</Link>
+            </li>
+            <li>
+              <Link to={"createTask"}>Create Task</Link>
             </li>
           </ul>
         </div>

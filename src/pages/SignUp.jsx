@@ -17,28 +17,46 @@ const SignUp = () => {
     setErrors(null);
     setPassMatch(null);
     const form = e.target;
-
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
+    const userInfo = {
+      name,
+      email,
+    };
 
     if (password !== confirmPassword) {
       setPassMatch("Password Not Match ");
     } else {
+      // Login with Email and Password
       createUserWithEmail(email, password)
         .then(() => {
-          toast.success("Login success !!");
-          navigate(from);
-          form.reset();
+          // Database Update
+          fetch("http://localhost:3000/users", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify(userInfo),
+          })
+            .then((res) => res.json())
+            .then(() => {
+              toast.success("Login success !!");
+              navigate(from);
+              form.reset();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .catch((error) => {
           setErrors(error.message);
-          console.log(errors);
         });
     }
   };
   return (
-    <div className="hero ">
+    <div className="hero mt-20 ">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <div className="w-full mx-auto text-center">
